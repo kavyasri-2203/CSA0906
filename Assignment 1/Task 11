@@ -1,0 +1,113 @@
+import java.util.*;
+
+abstract class Vehicle {
+    String regNo;
+
+    Vehicle(String regNo) {
+        this.regNo = regNo;
+    }
+
+    abstract double rate();
+}
+
+class Bike extends Vehicle {
+    Bike(String r) {
+        super(r);
+    }
+
+    double rate() {
+        return 10;
+    }
+}
+
+class Car extends Vehicle {
+    Car(String r) {
+        super(r);
+    }
+
+    double rate() {
+        return 30;
+    }
+}
+
+class ElectricCar extends Vehicle {
+    ElectricCar(String r) {
+        super(r);
+    }
+
+    double rate() {
+        return 40;
+    }
+}
+
+class ParkingTicket {
+    static int counter = 1000;
+
+    int ticketNo;
+    Vehicle vehicle;
+    long entryTime;
+
+    ParkingTicket(Vehicle v) {
+        ticketNo = ++counter;
+        vehicle = v;
+        entryTime = System.currentTimeMillis();
+    }
+}
+
+class ParkingFacility {
+    Vehicle[] slots = new Vehicle[5];
+    ParkingTicket[] tickets = new ParkingTicket[5];
+
+    void enter(Vehicle v) {
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[i] == null) {
+                slots[i] = v;
+                tickets[i] = new ParkingTicket(v);
+
+                System.out.println("Parking Successful");
+                System.out.println("Slot: " + (i + 1));
+                System.out.println("Ticket: " +
+                    tickets[i].ticketNo);
+                return;
+            }
+        }
+
+        System.out.println("Parking Full");
+    }
+
+    void exit(String regNo, int minutes) {
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[i] != null &&
+                    slots[i].regNo.equals(regNo)) {
+
+                int hours = (minutes + 59) / 60;
+                double fee = hours * slots[i].rate();
+
+                System.out.println("Vehicle: " + regNo);
+                System.out.println("Parking Fee: Rs " + fee);
+
+                slots[i] = null;
+                tickets[i] = null;
+
+                System.out.println("Vehicle Exited");
+                return;
+            }
+        }
+
+        System.out.println("Vehicle Not Found");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ParkingFacility p = new ParkingFacility();
+
+        p.enter(new Bike("TN01AB1111"));
+        p.enter(new Car("TN02CD2222"));
+        p.enter(new ElectricCar("TN03EF3333"));
+
+        p.exit("TN01AB1111", 120);
+        p.exit("TN02CD2222", 180);
+        p.exit("TN03EF3333", 60);
+    }
+}
