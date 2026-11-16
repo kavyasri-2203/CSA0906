@@ -1,0 +1,62 @@
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+
+        try {
+            // Create sample input file
+            try (PrintWriter w = new PrintWriter("passes.txt")) {
+                w.println("P1001,192311001,Arun,12,4500");
+                w.println("P1002,192311002,Divya,7,3800");
+                w.println("P1003,192311003,Ravi,12,4200");
+                w.println("P1004,192311004,John,abc,3000");
+            }
+
+            int success = 0, failed = 0;
+
+            // Read and migrate records
+            try (BufferedReader br = new BufferedReader(
+                    new FileReader("passes.txt"));
+                 PrintWriter out = new PrintWriter(
+                    new FileWriter("migrated_passes.txt"))) {
+
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    try {
+                        String[] p = line.split(",", -1);
+
+                        if (p.length != 5)
+                            throw new Exception();
+
+                        int route = Integer.parseInt(p[3]);
+                        double amount = Double.parseDouble(p[4]);
+
+                        if (p[0].isEmpty() || p[1].isEmpty()
+                                || route <= 0 || amount < 0)
+                            throw new Exception();
+
+                        out.println(line);
+                        success++;
+
+                    } catch (Exception e) {
+                        System.out.println("Invalid Record: " + line);
+                        failed++;
+                    }
+                }
+            }
+
+            System.out.println("\nMigration Completed");
+            System.out.println("Successful Records: " + success);
+            System.out.println("Failed Records: " + failed);
+
+            System.out.println("Database: Not connected");
+            System.out.println("Migration File: migrated_passes.txt");
+
+        } catch (IOException e) {
+            System.out.println("File Error: " + e.getMessage());
+        }
+    }
+}
