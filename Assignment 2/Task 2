@@ -1,0 +1,56 @@
+
+import java.util.*;
+
+public class Q2 {
+    public static void main(String[] args) {
+        int[] sizes = {1000, 10000, 50000};
+
+        for (int n : sizes) {
+            List<Integer> a = new ArrayList<>();
+            List<Integer> l = new LinkedList<>();
+
+            long start = System.nanoTime();
+            for (int i = 0; i < n; i++) a.add(i);
+            System.out.println("ArrayList Add: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            for (int i = 0; i < n; i++) l.add(i);
+            System.out.println("LinkedList Add: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            a.get(n / 2);
+            System.out.println("ArrayList Access: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            l.get(n / 2);
+            System.out.println("LinkedList Access: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            a.add(0, -1);
+            a.remove(0);
+            System.out.println("ArrayList Front Operations: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            l.add(0, -1);
+            l.remove(0);
+            System.out.println("LinkedList Front Operations: " +
+                    (System.nanoTime() - start) + " ns");
+
+            ArrayDeque<Integer> q = new ArrayDeque<>();
+            start = System.nanoTime();
+            for (int i = 0; i < n; i++) q.addLast(i);
+            q.addFirst(-1);
+            q.removeFirst();
+            System.out.println("ArrayDeque Operations: " +
+                    (System.nanoTime() - start) + " ns");
+
+            System.out.println("Size: " + n);
+            System.out.println("--------------------");
+        }
+    }
+}
