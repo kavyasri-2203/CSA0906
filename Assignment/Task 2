@@ -1,0 +1,33 @@
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String correctId = "arun";
+        String correctPassword = "1234";
+
+        System.out.print("Enter User ID: ");
+        String id = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        String password = sc.nextLine();
+
+        // Unsafe login simulation
+        boolean unsafeLogin =
+            id.equals("' OR '1'='1' -- ") || 
+            (id.equals(correctId) && password.equals(correctPassword));
+
+        // PreparedStatement-style parameter checking
+        boolean secureLogin =
+            id.equals(correctId) && password.equals(correctPassword);
+
+        System.out.println("\nUnsafe Login: " +
+            (unsafeLogin ? "Accepted" : "Rejected"));
+
+        System.out.println("Secure Login: " +
+            (secureLogin ? "Accepted" : "Rejected"));
+    }
+}
