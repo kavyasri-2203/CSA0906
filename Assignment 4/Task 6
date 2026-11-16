@@ -1,0 +1,69 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<String> registrations = new ArrayList<>();
+
+        while (true) {
+            System.out.println("\n1. Register");
+            System.out.println("2. View Registrations");
+            System.out.println("3. Filter Events");
+            System.out.println("4. Export List");
+            System.out.println("5. Exit");
+
+            System.out.print("Enter Choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Student ID: ");
+                    String id = sc.nextLine().trim();
+
+                    System.out.print("Enter Event Name: ");
+                    String event = sc.nextLine().trim();
+
+                    if (id.isEmpty() || event.isEmpty()) {
+                        System.out.println("Invalid Input");
+                    } else if (registrations.contains(id + "-" + event)) {
+                        System.out.println("Already Registered!");
+                    } else {
+                        registrations.add(id + "-" + event);
+                        System.out.println("Registration Successful");
+                    }
+                    break;
+
+                case 2:
+                    System.out.println("All Registrations:");
+                    for (String r : registrations)
+                        System.out.println(r);
+                    break;
+
+                case 3:
+                    System.out.print("Enter Event to Filter: ");
+                    String filter = sc.nextLine();
+
+                    for (String r : registrations) {
+                        if (r.endsWith("-" + filter))
+                            System.out.println(r);
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Export List:");
+                    for (String r : registrations)
+                        System.out.println(r);
+                    break;
+
+                case 5:
+                    System.out.println("Thank You!");
+                    return;
+
+                default:
+                    System.out.println("Invalid Choice");
+            }
+        }
+    }
+}
