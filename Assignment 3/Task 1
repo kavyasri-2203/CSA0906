@@ -1,0 +1,40 @@
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        double balance = 5000;
+
+        try {
+            System.out.print("Enter Account Number: ");
+            int account = Integer.parseInt(sc.nextLine());
+
+            System.out.print("Enter Withdrawal Amount: ");
+            double amount = Double.parseDouble(sc.nextLine());
+
+            if (account <= 0)
+                throw new IllegalArgumentException("Invalid account number");
+
+            if (amount <= 0)
+                throw new IllegalArgumentException("Invalid amount");
+
+            if (amount > balance)
+                throw new ArithmeticException("Insufficient balance");
+
+            balance -= amount;
+            System.out.println("Withdrawal Successful");
+            System.out.println("Remaining Balance: " + balance);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Enter numbers only");
+        } catch (ArithmeticException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            System.out.println("ATM Transaction Completed");
+            sc.close();
+        }
+    }
+}
