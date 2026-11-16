@@ -1,0 +1,56 @@
+
+class Station extends Thread {
+    int count;
+
+    Station(String name, int count) {
+        super(name);
+        this.count = count;
+    }
+
+    public void run() {
+        try {
+            Thread.sleep(500);
+            System.out.println(getName() +
+                    " scanned " + count + " scripts");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+class ScannerTask implements Runnable {
+    int count;
+
+    ScannerTask(int count) {
+        this.count = count;
+    }
+
+    public void run() {
+        System.out.println("Runnable scanned " + count + " scripts");
+    }
+}
+
+public class Main {
+    public static void main(String[] args)
+            throws InterruptedException {
+
+        Station[] stations = {
+            new Station("Station 1", 10),
+            new Station("Station 2", 20),
+            new Station("Station 3", 15),
+            new Station("Station 4", 25)
+        };
+
+        for (Station s : stations)
+            s.start();
+
+        for (Station s : stations)
+            s.join();
+
+        Thread t = new Thread(new ScannerTask(30));
+        t.start();
+        t.join();
+
+        System.out.println("All Stations Completed");
+    }
+}
