@@ -1,0 +1,37 @@
+class ParkingSlot {
+    private int slotNo;
+    private boolean occupied;
+
+    public void setSlotNo(int slotNo) {
+        if (slotNo > 0)
+            this.slotNo = slotNo;
+        else
+            System.out.println("Invalid Slot Number");
+    }
+
+    public int getSlotNo() {
+        return slotNo;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ParkingSlot p = new ParkingSlot();
+
+        p.setSlotNo(10);
+        p.setOccupied(true);
+
+        System.out.println("Slot Number: " + p.getSlotNo());
+        System.out.println("Occupied: " + p.isOccupied());
+
+        p.setSlotNo(-5);
+    }
+}
