@@ -1,0 +1,101 @@
+abstract class Vehicle {
+    String regNo;
+
+    Vehicle(String regNo) {
+        this.regNo = regNo;
+    }
+
+    abstract double calculateFee(int hours);
+}
+
+class Car extends Vehicle {
+    Car(String r) {
+        super(r);
+    }
+
+    double calculateFee(int hours) {
+        return hours * 30;
+    }
+}
+
+class ElectricBike extends Vehicle {
+    ElectricBike(String r) {
+        super(r);
+    }
+
+    double calculateFee(int hours) {
+        return 20;
+    }
+}
+
+class DeliveryVan extends Vehicle {
+    DeliveryVan(String r) {
+        super(r);
+    }
+
+    double calculateFee(int hours) {
+        return hours * 60;
+    }
+}
+
+class ParkingFacility {
+    String[][] slots = {
+        new String[20],
+        new String[25],
+        new String[30],
+        new String[35],
+        new String[40]
+    };
+
+    void park(Vehicle v, int floor, int slot) {
+        if (floor < 0 || floor >= slots.length ||
+                slot < 0 || slot >= slots[floor].length) {
+            System.out.println("Invalid Slot");
+            return;
+        }
+
+        if (slots[floor][slot] != null) {
+            System.out.println("Slot Already Occupied");
+            return;
+        }
+
+        slots[floor][slot] = v.regNo;
+
+        System.out.println(v.regNo + " Parked Successfully");
+        System.out.println("Fee: Rs " + v.calculateFee(2));
+    }
+
+    void release(int floor, int slot) {
+        if (floor < 0 || floor >= slots.length ||
+                slot < 0 || slot >= slots[floor].length) {
+            System.out.println("Invalid Slot");
+            return;
+        }
+
+        if (slots[floor][slot] == null) {
+            System.out.println("Slot Already Free");
+            return;
+        }
+
+        System.out.println("Released: " + slots[floor][slot]);
+        slots[floor][slot] = null;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ParkingFacility p = new ParkingFacility();
+
+        Vehicle v1 = new Car("TN01AB1111");
+        Vehicle v2 = new ElectricBike("TN02CD2222");
+        Vehicle v3 = new DeliveryVan("TN03EF3333");
+
+        p.park(v1, 0, 0);
+        p.park(v2, 1, 0);
+        p.park(v3, 2, 0);
+
+        p.release(0, 0);
+        p.release(1, 0);
+        p.release(2, 0);
+    }
+}
