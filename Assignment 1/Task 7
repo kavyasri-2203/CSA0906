@@ -1,0 +1,38 @@
+class Vehicle {
+    double calculateFee() {
+        return 0;
+    }
+}
+
+class TwoWheeler extends Vehicle {
+    @Override
+    double calculateFee() {
+        return 20;
+    }
+}
+
+class Car extends Vehicle {
+    @Override
+    double calculateFee() {
+        return 60;
+    }
+}
+
+class ElectricCar extends Vehicle {
+    @Override
+    double calculateFee() {
+        return 100;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Vehicle v1 = new TwoWheeler();
+        Vehicle v2 = new Car();
+        Vehicle v3 = new ElectricCar();
+
+        System.out.println(v1.calculateFee());
+        System.out.println(v2.calculateFee());
+        System.out.println(v3.calculateFee());
+    }
+}
