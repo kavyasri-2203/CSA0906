@@ -1,0 +1,40 @@
+
+import java.util.*;
+
+public class Q7 {
+    public static void main(String[] args) {
+        int n = 50000;
+
+        // Original solution: ArrayList
+        ArrayList<Integer> list = new ArrayList<>();
+
+        long start = System.nanoTime();
+
+        for (int i = 0; i < n; i++)
+            list.add(0, i);
+
+        long originalTime = System.nanoTime() - start;
+
+        // Redesigned solution: ArrayDeque
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+
+        start = System.nanoTime();
+
+        for (int i = 0; i < n; i++)
+            deque.addFirst(i);
+
+        long newTime = System.nanoTime() - start;
+
+        System.out.println("Original ArrayList Time: "
+                + originalTime + " ns");
+
+        System.out.println("Redesigned ArrayDeque Time: "
+                + newTime + " ns");
+
+        System.out.println("ArrayList Size: " + list.size());
+        System.out.println("ArrayDeque Size: " + deque.size());
+
+        System.out.println("Original First Element: " + list.get(0));
+        System.out.println("Redesigned First Element: " + deque.peekFirst());
+    }
+}
