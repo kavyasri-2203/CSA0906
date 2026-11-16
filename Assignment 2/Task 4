@@ -1,0 +1,45 @@
+import java.util.*;
+
+public class Q4 {
+    public static void main(String[] args) {
+        int[] sizes = {1000, 10000, 50000};
+
+        for (int n : sizes) {
+            Map<Integer, String> hash = new HashMap<>();
+            Map<Integer, String> tree = new TreeMap<>();
+            Map<Integer, String> linked = new LinkedHashMap<>();
+
+            for (int i = n; i >= 1; i--) {
+                hash.put(i, "Medicine" + i);
+                tree.put(i, "Medicine" + i);
+                linked.put(i, "Medicine" + i);
+            }
+
+            long start = System.nanoTime();
+            for (int i = 1; i <= 100000; i++)
+                hash.get(i % n + 1);
+            System.out.println("HashMap Lookup: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            for (int i = 1; i <= 100000; i++)
+                tree.get(i % n + 1);
+            System.out.println("TreeMap Lookup: " +
+                    (System.nanoTime() - start) + " ns");
+
+            start = System.nanoTime();
+            for (int i = 1; i <= 100000; i++)
+                linked.get(i % n + 1);
+            System.out.println("LinkedHashMap Lookup: " +
+                    (System.nanoTime() - start) + " ns");
+
+            System.out.println("HashMap Report: " + hash.size());
+            System.out.println("TreeMap Report: " + tree.keySet());
+            System.out.println("LinkedHashMap Report: " +
+                    linked.keySet());
+
+            System.out.println("Medicine Count: " + n);
+            System.out.println("--------------------");
+        }
+    }
+}
