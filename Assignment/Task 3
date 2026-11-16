@@ -1,0 +1,73 @@
+
+import java.util.*;
+
+public class Main {
+
+    static ArrayList<String[]> database = new ArrayList<>();
+
+    static void statementInsert(List<String[]> data) {
+        for (String[] p : data)
+            database.add(p);
+    }
+
+    static void preparedInsert(List<String[]> data) {
+        for (String[] p : data)
+            database.add(p.clone());
+    }
+
+    static void batchInsert(List<String[]> data) {
+        ArrayList<String[]> batch = new ArrayList<>();
+
+        for (String[] p : data) {
+            batch.add(p.clone());
+
+            if (batch.size() == 1000) {
+                database.addAll(batch);
+                batch.clear();
+            }
+        }
+
+        database.addAll(batch);
+    }
+
+    public static void main(String[] args) {
+
+        int n = 10000;
+        List<String[]> passes = new ArrayList<>();
+
+        for (int i = 1; i <= n; i++) {
+            passes.add(new String[]{
+                "P" + i,
+                "REG" + i,
+                "Student" + i,
+                "12",
+                "4500"
+            });
+        }
+
+        long start;
+
+        database.clear();
+        start = System.nanoTime();
+        statementInsert(passes);
+        System.out.println("Statement Time: " +
+                (System.nanoTime() - start) + " ns");
+        System.out.println("Records: " + database.size());
+
+        database.clear();
+        start = System.nanoTime();
+        preparedInsert(passes);
+        System.out.println("PreparedStatement Time: " +
+                (System.nanoTime() - start) + " ns");
+        System.out.println("Records: " + database.size());
+
+        database.clear();
+        start = System.nanoTime();
+        batchInsert(passes);
+        System.out.println("Batch Processing Time: " +
+                (System.nanoTime() - start) + " ns");
+        System.out.println("Records: " + database.size());
+
+        System.out.println("\nBatch Insertion Completed");
+    }
+}
