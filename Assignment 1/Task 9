@@ -1,0 +1,36 @@
+abstract class Vehicle {
+    abstract double calculateFee(int hours);
+
+    void display() {
+        System.out.println("Parking Vehicle");
+    }
+}
+
+interface Chargeable {
+    double chargingFee(int units);
+}
+
+class ElectricCar extends Vehicle implements Chargeable {
+
+    double calculateFee(int hours) {
+        return hours * 30;
+    }
+
+    public double chargingFee(int units) {
+        return units * 12;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ElectricCar e = new ElectricCar();
+
+        e.display();
+
+        System.out.println("Parking Fee: " +
+            e.calculateFee(2));
+
+        System.out.println("Charging Fee: " +
+            e.chargingFee(10));
+    }
+}
