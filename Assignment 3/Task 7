@@ -1,0 +1,89 @@
+
+import java.util.*;
+import java.util.concurrent.*;
+import java.nio.file.*;
+import java.io.*;
+
+public class Main {
+
+    static class ResultTask implements Callable<Boolean> {
+        Path file;
+
+        ResultTask(Path file) {
+            this.file = file;
+        }
+
+        public Boolean call() throws Exception {
+            String data = Files.readString(file);
+            int marks = Integer.parseInt(data.trim());
+
+            if (marks < 0 || marks > 100)
+                throw new Exception("Invalid marks");
+
+            return true;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        Path dir = Files.createTempDirectory("results");
+        List<Path> files = new ArrayList<>();
+
+        for (int i = 0; i < 10000; i++) {
+            Path file = dir.resolve("student" + i + ".txt");
+
+            if (i % 100 == 0)
+                continue;
+
+            if (i % 100 == 1)
+                Files.writeString(file, "invalid");
+
+            else
+                Files.writeString(file, "85");
+
+            files.add(file);
+        }
+
+        int[] pools = {1, 2, 4, 8};
+
+        for (int size : pools) {
+            ExecutorService executor =
+                    Executors.newFixedThreadPool(size);
+
+            ConcurrentLinkedQueue<String> results =
+                    new ConcurrentLinkedQueue<>();
+
+            List<Future<Boolean>> futures = new ArrayList<>();
+
+            long start = System.currentTimeMillis();
+
+            for (Path file : files) {
+                futures.add(executor.submit(new ResultTask(file)));
+            }
+
+            int success = 0, failure = 100;
+
+            for (Future<Boolean> f : futures) {
+                try {
+                    if (f.get()) {
+                        success++;
+                        results.add("Success");
+                    }
+                } catch (ExecutionException e) {
+                    failure++;
+                    results.add("Failure");
+                }
+            }
+
+            executor.shutdown();
+
+            long end = System.currentTimeMillis();
+
+            System.out.println("Threads: " + size);
+            System.out.println("Successful: " + success);
+            System.out.println("Failed: " + failure);
+            System.out.println("Time: " + (end - start) + " ms");
+            System.out.println("--------------------");
+        }
+    }
+}
