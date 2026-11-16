@@ -1,0 +1,39 @@
+public class Q1 {
+    static String usingString(int n) {
+        String s = "";
+        for (int i = 0; i < n; i++)
+            s += "Ticket" + i + " ";
+        return s;
+    }
+
+    static String usingBuilder(int n) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < n; i++)
+            s.append("Ticket").append(i).append(" ");
+        return s.toString();
+    }
+
+    static String usingBuffer(int n) {
+        StringBuffer s = new StringBuffer();
+        for (int i = 0; i < n; i++)
+            s.append("Ticket").append(i).append(" ");
+        return s.toString();
+    }
+
+    static void test(String name, Runnable task) {
+        long start = System.nanoTime();
+        task.run();
+        long end = System.nanoTime();
+        System.out.println(name + ": " + (end - start) + " ns");
+    }
+
+    public static void main(String[] args) {
+        int n = 10000;
+
+        test("String", () -> usingString(n));
+        test("StringBuilder", () -> usingBuilder(n));
+        test("StringBuffer", () -> usingBuffer(n));
+
+        System.out.println("Ticket: " + usingBuilder(3));
+    }
+}
