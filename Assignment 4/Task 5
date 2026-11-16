@@ -1,0 +1,38 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            System.out.print("Enter Amount in INR: ");
+            double amount = sc.nextDouble();
+
+            if (!Double.isFinite(amount) || amount < 0)
+                throw new IllegalArgumentException("Invalid Amount");
+
+            System.out.println("1. USD");
+            System.out.println("2. EUR");
+
+            System.out.print("Choose Currency: ");
+            int choice = sc.nextInt();
+
+            double result;
+
+            if (choice == 1) {
+                result = amount * 0.012;
+                System.out.printf("USD: %.2f%n", result);
+            } else if (choice == 2) {
+                result = amount * 0.011;
+                System.out.printf("EUR: %.2f%n", result);
+            } else {
+                System.out.println("Invalid Currency");
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Enter Valid Numbers");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
